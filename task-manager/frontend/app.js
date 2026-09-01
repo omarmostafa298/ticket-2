@@ -105,6 +105,13 @@ loginForm.addEventListener('submit', async (e) => {
 
 document.getElementById('logout-btn-user').addEventListener('click', logout);
 document.getElementById('logout-btn-admin').addEventListener('click', logout);
+document.getElementById('dashboard-home-btn').addEventListener('click', () => {
+  // Collapse the database table and refresh the stats — a clear "go home" action
+  dbView.classList.add('hidden');
+  viewDbBtn.textContent = 'View Database';
+  dbVisible = false;
+  loadStats();
+});
 
 function logout() {
   clearSession();
@@ -202,7 +209,7 @@ function renderTickets(tickets) {
     const info = document.createElement('div');
     const title = document.createElement('div');
     title.className = 'ticket-title';
-    title.textContent = t.title;
+    title.textContent = (t.status === 'done' ? '✓ ' : '✗ ') + t.title;
     info.appendChild(title);
 
     if (t.description) {
@@ -298,7 +305,7 @@ function renderDbTable(tickets) {
       <td>${escapeHtml(t.description || '')}</td>
       <td>${new Date(t.created_at).toLocaleString()}</td>
       <td>${t.closed_at ? new Date(t.closed_at).toLocaleString() : '-'}</td>
-      <td><span class="badge ${t.status}">${t.status === 'done' ? 'Done' : 'Not Done'}</span></td>
+      <td><span class="badge ${t.status}">${t.status === 'done' ? '✓ Done' : '✗ Not Done'}</span></td>
     `;
     dbTableBody.appendChild(tr);
   }
