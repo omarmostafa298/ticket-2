@@ -115,8 +115,13 @@ function logout() {
 
 function enterApp() {
   const session = getSession();
+  if (!session) {
+    authView.classList.remove('hidden');
+    userView.classList.add('hidden');
+    adminView.classList.add('hidden');
+    return;
+  }
   authView.classList.add('hidden');
-  if (!session) return;
 
   if (session.user.role === 'admin') {
     userView.classList.add('hidden');
