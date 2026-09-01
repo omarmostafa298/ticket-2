@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IT Ticket System</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- AUTH VIEW -->
+  <div id="auth-view" class="auth-container">
+    <div class="auth-box">
+      <h1>IT Ticket System</h1>
+
+      <form id="login-form">
+        <h2>Sign In</h2>
+        <input type="text" id="login-username" placeholder="Username" required />
+        <input type="password" id="login-password" placeholder="Password" required />
+        <button type="submit">Sign In</button>
+        <p class="error" id="login-error"></p>
+      </form>
+
+      <p class="switch-text">Don't have an account? <a href="#" id="show-register">Create account</a></p>
+
+      <form id="register-form" class="hidden">
+        <h2>Create Account</h2>
+        <input type="text" id="register-username" placeholder="Choose a username" required />
+        <input type="password" id="register-password" placeholder="Choose a password (min 4 chars)" required />
+        <button type="submit">Create Account</button>
+        <p class="error" id="register-error"></p>
+      </form>
+
+      <p class="switch-text hidden" id="show-login-text">Already have an account? <a href="#" id="show-login">Sign in</a></p>
+    </div>
+  </div>
+
+  <!-- USER VIEW -->
+  <div id="user-view" class="app hidden">
+    <header>
+      <h1>My Tickets</h1>
+      <div class="header-right">
+        <span id="user-welcome"></span>
+        <button id="notify-btn" class="secondary-btn">Enable Notifications</button>
+        <button id="logout-btn-user" class="secondary-btn">Log Out</button>
+      </div>
+    </header>
+
+    <form id="ticket-form">
+      <input type="text" id="title" placeholder="Problem" required />
+      <input type="text" id="description" placeholder="Description" />
+      <button type="submit">Report Problem</button>
+    </form>
+
+    <ul id="ticket-list"></ul>
+  </div>
+
+  <!-- ADMIN VIEW -->
+  <div id="admin-view" class="app hidden">
+    <header>
+      <h1>Admin Dashboard</h1>
+      <div class="header-right">
+        <span id="admin-welcome"></span>
+        <button id="logout-btn-admin" class="secondary-btn">Log Out</button>
+      </div>
+    </header>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-number" id="stat-total">0</div>
+        <div class="stat-label">Total Problems</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="stat-done">0</div>
+        <div class="stat-label">Done</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="stat-open">0</div>
+        <div class="stat-label">Not Done</div>
+      </div>
+    </div>
+
+    <button id="view-db-btn" class="primary-btn">View Database</button>
+
+    <div id="db-view" class="hidden">
+      <h2>All Problems</h2>
+      <div class="table-wrap">
+        <table id="db-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Reported By</th>
+              <th>Problem</th>
+              <th>Description</th>
+              <th>Created</th>
+              <th>Closed</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="db-table-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
