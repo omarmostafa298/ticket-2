@@ -27,7 +27,7 @@ services:
       PORT: 4000
       JWT_SECRET: please-change-this-to-a-long-random-string
       ADMIN_USERNAME: admin
-      ADMIN_PASSWORD: admin123
+      ADMIN_PASSWORD: adminit9812
     depends_on:
       - database
     ports:
