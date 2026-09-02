@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IT Helpdesk — Meinhardt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app-shell">
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <img src="logo.png" alt="Meinhardt" class="topbar-logo">
+      <span class="topbar-title">IT Helpdesk</span>
+    </div>
+    <div class="topbar-user">
+      <span id="user-name">Signed in</span>
+      <div class="avatar" id="user-avatar">U</div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="main-head">
+      <div>
+        <h1>Tickets</h1>
+        <p>Track and manage IT support requests.</p>
+      </div>
+      <button class="btn-secondary" id="new-ticket-btn">+ New ticket</button>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="num">24</div>
+        <div class="label">Tickets this month</div>
+      </div>
+      <div class="stat-card accent">
+        <div class="num">6</div>
+        <div class="label">Open</div>
+      </div>
+      <div class="stat-card">
+        <div class="num">4</div>
+        <div class="label">In progress</div>
+      </div>
+      <div class="stat-card">
+        <div class="num">14</div>
+        <div class="label">Closed</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <h2>Recent tickets</h2>
+        <button class="btn-secondary">Filter</button>
+      </div>
+      <table class="tickets">
+        <thead>
+          <tr>
+            <th>Ticket</th>
+            <th>Reported by</th>
+            <th>Description</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="ticket-rows">
+          <tr>
+            <td>TCK-0032</td>
+            <td>S. Aziz</td>
+            <td>Laptop won't connect to office Wi-Fi</td>
+            <td><span class="pill open">Open</span></td>
+          </tr>
+          <tr>
+            <td>TCK-0031</td>
+            <td>R. Farouk</td>
+            <td>Outlook keeps freezing on send</td>
+            <td><span class="pill progress">In progress</span></td>
+          </tr>
+          <tr>
+            <td>TCK-0030</td>
+            <td>M. Nabil</td>
+            <td>Need access to shared drive</td>
+            <td><span class="pill closed">Closed</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
