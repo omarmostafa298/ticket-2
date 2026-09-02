@@ -28,6 +28,8 @@ body {
 a { color: inherit; }
 .hidden { display: none !important; }
 
+/* ---------- Login / register ---------- */
+
 .login-screen {
   min-height: 100vh;
   display: flex;
@@ -124,6 +126,8 @@ a { color: inherit; }
 
 .login-footer { text-align: center; font-size: 13px; color: var(--slate); margin-top: 22px; }
 .login-footer a { color: var(--navy); font-weight: 600; text-decoration: none; }
+
+/* ---------- App shell / dashboards ---------- */
 
 .app-shell { min-height: 100vh; position: relative; isolation: isolate; }
 
@@ -239,9 +243,48 @@ table.tickets td {
 table.tickets tr:last-child td { border-bottom: none; }
 .row-sub { font-size: 12px; color: var(--slate); margin-top: 3px; }
 
-.pill { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 11.5px; font-weight: 600; white-space: nowrap; }
+.pill {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
 .pill.open { background: #FDECEB; color: var(--red-dark); }
 .pill.closed { background: #E9F3EC; color: var(--green); }
+
+/* Category selector (segmented pill control) */
+.segmented {
+  display: inline-flex;
+  background: var(--off-white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 3px;
+  gap: 3px;
+}
+
+.segmented-btn {
+  border: none;
+  background: transparent;
+  color: var(--slate);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background .15s ease, color .15s ease;
+}
+
+.segmented-btn:hover { color: var(--ink); }
+.segmented-btn.active { background: var(--navy); color: var(--white); }
+
+/* Category badges: network=red, software=yellow, hardware=green */
+.pill.category-network { background: #FDECEB; color: var(--red-dark); }
+.pill.category-software { background: #FEF6E0; color: #8A6300; }
+.pill.category-hardware { background: #E9F3EC; color: var(--green); }
 
 @media (max-width: 640px) {
   .stat-grid { grid-template-columns: repeat(2, 1fr); }
