@@ -37,8 +37,16 @@
         <h2>Submit a new ticket</h2>
       </div>
       <form id="new-ticket-form" class="ticket-form">
-        <div class="field">
-          <label for="ticket-title">What's the problem?</label>
+  <div class="field">
+    <label>Category</label>
+    <div class="segmented" id="category-segmented">
+      <button type="button" class="segmented-btn active" data-category="software">Software</button>
+      <button type="button" class="segmented-btn" data-category="hardware">Hardware</button>
+      <button type="button" class="segmented-btn" data-category="network">Network</button>
+    </div>
+  </div>
+  <div class="field">
+    <label for="ticket-title">What's the problem?</label>
           <input type="text" id="ticket-title" placeholder="e.g. Laptop won't connect to Wi-Fi" required>
         </div>
         <div class="field">
