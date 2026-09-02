@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Tickets — Meinhardt IT Helpdesk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app-shell">
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <img src="logo.png" alt="Meinhardt" class="topbar-logo">
+      <span class="topbar-title">IT Helpdesk</span>
+    </div>
+    <div class="topbar-user">
+      <span id="user-name">—</span>
+      <div class="avatar" id="user-avatar">U</div>
+      <button class="btn-secondary btn-small" id="logout-btn">Log out</button>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="main-head">
+      <div>
+        <h1>My tickets</h1>
+        <p>Describe the problem and we'll get it fixed.</p>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-bottom: 24px;">
+      <div class="panel-head">
+        <h2>Submit a new ticket</h2>
+      </div>
+      <form id="new-ticket-form" class="ticket-form">
+        <div class="field">
+          <label for="ticket-title">What's the problem?</label>
+          <input type="text" id="ticket-title" placeholder="e.g. Laptop won't connect to Wi-Fi" required>
+        </div>
+        <div class="field">
+          <label for="ticket-description">Details (optional)</label>
+          <textarea id="ticket-description" rows="3" placeholder="Any extra detail that helps IT fix it faster"></textarea>
+        </div>
+        <p class="form-error" id="new-ticket-error"></p>
+        <button type="submit" class="btn-primary" style="width:auto; padding-left:24px; padding-right:24px;">Submit ticket</button>
+      </form>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <h2>Your tickets</h2>
+      </div>
+      <table class="tickets">
+        <thead>
+          <tr>
+            <th>Problem</th>
+            <th>Submitted</th>
+            <th>Status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="user-ticket-rows">
+          <tr><td colspan="4">Loading…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
