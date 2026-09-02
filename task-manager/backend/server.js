@@ -33,8 +33,6 @@ async function waitForDb(retries = 10, delayMs = 3000) {
   throw new Error('Could not connect to database after multiple attempts');
 }
 
-// Create a default admin account on first run, so there's a way in.
-// Credentials are printed to the backend container logs once.
 async function ensureAdminUser() {
   const existing = await pool.query("SELECT id FROM users WHERE role = 'admin' LIMIT 1");
   if (existing.rows.length > 0) return;
@@ -54,15 +52,13 @@ async function ensureAdminUser() {
   console.log('==============================================');
 }
 
-// ---- Auth middleware ----
-
 function authenticate(req, res, next) {
   const header = req.headers['authorization'];
   const token = header && header.split(' ')[1];
   if (!token) return res.status(401).json({ error: 'No token provided' });
   jwt.verify(token, JWT_SECRET, (err, user) => {
     if (err) return res.status(403).json({ error: 'Invalid or expired token' });
-    req.user = user; // { id, username, role }
+    req.user = user;
     next();
   });
 }
@@ -74,13 +70,11 @@ function requireAdmin(req, res, next) {
   next();
 }
 
-// ---- Health check ----
+const VALID_CATEGORIES = ['software', 'hardware', 'network'];
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' });
 });
-
-// ---- Auth routes ----
 
 app.post('/api/auth/register', async (req, res) => {
   try {
@@ -125,8 +119,6 @@ app.post('/api/auth/login', async (req, res) => {
   }
 });
 
-// ---- Ticket routes (regular users: see only their own) ----
-
 app.get('/api/tickets', authenticate, async (req, res) => {
   try {
     const result = await pool.query(
@@ -142,13 +134,14 @@ app.get('/api/tickets', authenticate, async (req, res) => {
 
 app.post('/api/tickets', authenticate, async (req, res) => {
   try {
-    const { title, description } = req.body;
+    const { title, description, category } = req.body;
     if (!title || !title.trim()) {
       return res.status(400).json({ error: 'Problem title is required' });
     }
+    const finalCategory = VALID_CATEGORIES.includes(category) ? category : 'software';
     const result = await pool.query(
-      `INSERT INTO tickets (user_id, title, description) VALUES ($1, $2, $3) RETURNING *`,
-      [req.user.id, title.trim(), description || null]
+      `INSERT INTO tickets (user_id, title, description, category) VALUES ($1, $2, $3, $4) RETURNING *`,
+      [req.user.id, title.trim(), description || null, finalCategory]
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {
@@ -157,7 +150,6 @@ app.post('/api/tickets', authenticate, async (req, res) => {
   }
 });
 
-// Update status (done / open) — only the owner (or an admin) can update
 app.put('/api/tickets/:id', authenticate, async (req, res) => {
   try {
     const { id } = req.params;
@@ -184,9 +176,6 @@ app.put('/api/tickets/:id', authenticate, async (req, res) => {
   }
 });
 
-// ---- Admin routes ----
-
-// Dashboard stats: total / done / open
 app.get('/api/admin/stats', authenticate, requireAdmin, async (req, res) => {
   try {
     const result = await pool.query(`
@@ -203,11 +192,10 @@ app.get('/api/admin/stats', authenticate, requireAdmin, async (req, res) => {
   }
 });
 
-// Full "database view" — every ticket from every user, spreadsheet style
 app.get('/api/admin/tickets', authenticate, requireAdmin, async (req, res) => {
   try {
     const result = await pool.query(`
-      SELECT t.id, u.username AS reported_by, t.title, t.description,
+      SELECT t.id, u.username AS reported_by, t.title, t.description, t.category,
              t.status, t.created_at, t.closed_at
       FROM tickets t
       JOIN users u ON u.id = t.user_id
