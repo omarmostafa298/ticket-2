@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard — Meinhardt IT Helpdesk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app-shell">
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <img src="logo.png" alt="Meinhardt" class="topbar-logo">
+      <span class="topbar-title">IT Helpdesk · Admin</span>
+    </div>
+    <div class="topbar-user">
+      <span id="user-name">—</span>
+      <div class="avatar" id="user-avatar">A</div>
+      <button class="btn-secondary btn-small" id="logout-btn">Log out</button>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="main-head">
+      <div>
+        <h1>All tickets</h1>
+        <p>Every ticket, from every employee.</p>
+      </div>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="num" id="stat-total">—</div>
+        <div class="label">Total tickets</div>
+      </div>
+      <div class="stat-card accent">
+        <div class="num" id="stat-open">—</div>
+        <div class="label">Open</div>
+      </div>
+      <div class="stat-card">
+        <div class="num" id="stat-done">—</div>
+        <div class="label">Done</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <h2>Ticket database</h2>
+      </div>
+      <table class="tickets">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Reported by</th>
+            <th>Problem</th>
+            <th>Submitted</th>
+            <th>Status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="admin-ticket-rows">
+          <tr><td colspan="6">Loading…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
