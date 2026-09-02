@@ -48,6 +48,11 @@ function statusPill(status) {
     ? '<span class="pill closed">Done</span>'
     : '<span class="pill open">Open</span>';
 }
+function categoryPill(category) {
+  const label = category ? category.charAt(0).toUpperCase() + category.slice(1) : 'Software';
+  const cls = ['network', 'hardware', 'software'].includes(category) ? category : 'software';
+  return `<span class="pill category-${cls}">${label}</span>`;
+}
 
 /* ---------------- index.html: login + register ---------------- */
 
@@ -120,16 +125,17 @@ if (userTicketRows) {
     document.getElementById('user-avatar').textContent = user.username.charAt(0).toUpperCase();
 
     async function loadMyTickets() {
-      userTicketRows.innerHTML = `<tr><td colspan="4">Loading…</td></tr>`;
+      userTicketRows.innerHTML = `<tr><td colspan="5">Loading…</td></tr>`;
       try {
         const tickets = await apiFetch('/tickets');
         if (tickets.length === 0) {
-          userTicketRows.innerHTML = `<tr><td colspan="4">No tickets yet. Submit one above.</td></tr>`;
+          userTicketRows.innerHTML = `<tr><td colspan="5">No tickets yet. Submit one above.</td></tr>`;
           return;
         }
         userTicketRows.innerHTML = tickets.map(t => `
           <tr>
             <td>${escapeHtml(t.title)}${t.description ? `<div class="row-sub">${escapeHtml(t.description)}</div>` : ''}</td>
+            <td>${categoryPill(t.category)}</td>
             <td>${fmtDate(t.created_at)}</td>
             <td>${statusPill(t.status)}</td>
             <td>
@@ -140,7 +146,7 @@ if (userTicketRows) {
           </tr>
         `).join('');
       } catch (err) {
-        userTicketRows.innerHTML = `<tr><td colspan="4">Failed to load tickets: ${escapeHtml(err.message)}</td></tr>`;
+        userTicketRows.innerHTML = `<tr><td colspan="5">Failed to load tickets: ${escapeHtml(err.message)}</td></tr>`;
       }
     }
 
@@ -162,6 +168,16 @@ if (userTicketRows) {
       }
     });
 
+    let selectedCategory = 'software';
+    const categorySegmented = document.getElementById('category-segmented');
+    categorySegmented?.addEventListener('click', (e) => {
+      const btn = e.target.closest('.segmented-btn');
+      if (!btn) return;
+      selectedCategory = btn.dataset.category;
+      categorySegmented.querySelectorAll('.segmented-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+
     const newTicketForm = document.getElementById('new-ticket-form');
     const newTicketError = document.getElementById('new-ticket-error');
     newTicketForm.addEventListener('submit', async (e) => {
@@ -173,9 +189,12 @@ if (userTicketRows) {
       try {
         await apiFetch('/tickets', {
           method: 'POST',
-          body: JSON.stringify({ title, description }),
+          body: JSON.stringify({ title, description, category: selectedCategory }),
         });
         newTicketForm.reset();
+        categorySegmented?.querySelectorAll('.segmented-btn').forEach(b => b.classList.remove('active'));
+        categorySegmented?.querySelector('[data-category="software"]')?.classList.add('active');
+        selectedCategory = 'software';
         loadMyTickets();
       } catch (err) {
         newTicketError.textContent = err.message;
@@ -209,11 +228,11 @@ if (adminTicketRows) {
     }
 
     async function loadAllTickets() {
-      adminTicketRows.innerHTML = `<tr><td colspan="6">Loading…</td></tr>`;
+      adminTicketRows.innerHTML = `<tr><td colspan="7">Loading…</td></tr>`;
       try {
         const tickets = await apiFetch('/admin/tickets');
         if (tickets.length === 0) {
-          adminTicketRows.innerHTML = `<tr><td colspan="6">No tickets yet.</td></tr>`;
+          adminTicketRows.innerHTML = `<tr><td colspan="7">No tickets yet.</td></tr>`;
           return;
         }
         adminTicketRows.innerHTML = tickets.map(t => `
@@ -221,6 +240,7 @@ if (adminTicketRows) {
             <td>#${t.id}</td>
             <td>${escapeHtml(t.reported_by)}</td>
             <td>${escapeHtml(t.title)}${t.description ? `<div class="row-sub">${escapeHtml(t.description)}</div>` : ''}</td>
+            <td>${categoryPill(t.category)}</td>
             <td>${fmtDate(t.created_at)}</td>
             <td>${statusPill(t.status)}</td>
             <td>
@@ -231,7 +251,7 @@ if (adminTicketRows) {
           </tr>
         `).join('');
       } catch (err) {
-        adminTicketRows.innerHTML = `<tr><td colspan="6">Failed to load tickets: ${escapeHtml(err.message)}</td></tr>`;
+        adminTicketRows.innerHTML = `<tr><td colspan="7">Failed to load tickets: ${escapeHtml(err.message)}</td></tr>`;
       }
     }
 
